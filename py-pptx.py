@@ -11,22 +11,26 @@ import pandas as pd
 from pptx import Presentation
 from pptx.util import Inches 
 
-# 最简单的标题和文本框
-def page0_hello(prs):
-    # slide_layouts[1]为带标题和正文框的ppt
-    title_slide_layout = prs.slide_layouts[1]
+# slide layout测试
+def test_slide_layout(prs):
+    slide_layout_list = ['Title (presentation title slide)',
+                         'Title and Content',
+                         'Section Header (sometimes called Segue)',
+                         'Two Content (side by side bullet textboxes)',
+                         'Comparison (same but additional title for each side by side content box)',
+                         'Title Only',
+                         'Blank',
+                         'Content with Caption',
+                         'Picture with Caption']
     
-    # 新增ppt（当前仅支持新增操作）
-    slide = prs.slides.add_slide(title_slide_layout)
-    
-    # 取本页ppt的title，向title文本框写如文字 
-    title = slide.shapes.title
-    title.text = 'this is a title' 
-    
-    # 取出本页第二个文本框，在第二个文本框中写入文字
-    subtitle = slide.shapes.placeholders[1]   
-    subtitle.text = 'this is a subtitle'   
-    
+    for index, name in enumerate(slide_layout_list):
+        new_slide_layout = prs.slide_layouts[index]
+        new_slide = prs.slides.add_slide(new_slide_layout)
+        
+        #6对应的是Blank，没有标题框
+        if index != 6:
+            title = new_slide.shapes.title
+            title.text = name
 
 # 箱线图    
 def page1_boxplot(prs):
@@ -59,8 +63,7 @@ if __name__ == "__main__":
     # 使用自定义模板
     prs = Presentation('./template/ppt_template0.pptx')
     
-    page0_hello(prs)
-    page1_boxplot(prs)
+    test_slide_layout(prs)
     
     # 保存ppt
     prs.save('数据分析报告.pptx')
