@@ -47,10 +47,15 @@ def page1_boxplot(prs):
     # 导入数据集
     df = pd.read_excel('./resource/data0.xlsx', 'Sheet1')
     
-    # 保存箱线图 
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.boxplot(df['交付周期'])
+    # 绘制箱线图 
+    # 方法1：使用matplotlib，暂未找到方法，待完善
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111)
+    # ax.boxplot(df['Lead Time'])
+    
+    # 方法1：使用dataframe，第一个参数column是数据列名，第二个参数by是分组的列名
+    df.boxplot(column='Lead Time', by='Project')
+    
     plt.savefig('./resource./交付周期_箱线图.png') 
     plt.show()
     
@@ -63,7 +68,7 @@ if __name__ == "__main__":
     # 使用自定义模板
     prs = Presentation('./template/ppt_template0.pptx')
     
-    test_slide_layout(prs)
+    page1_boxplot(prs)
     
     # 保存ppt
     prs.save('数据分析报告.pptx')
