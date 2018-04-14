@@ -5,11 +5,16 @@ Created on Thu Apr  5 12:12:34 2018
 @author: Administrator
 """
 
+# 数据分析
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# PPT
 from pptx import Presentation
 from pptx.util import Inches 
+
+# web 
+from selenium import webdriver 
 
 # slide layout测试
 def test_slide_layout(prs):
@@ -53,7 +58,7 @@ def page1_boxplot(prs):
     # ax = fig.add_subplot(111)
     # ax.boxplot(df['Lead Time'])
     
-    # 方法1：使用dataframe，第一个参数column是数据列名，第二个参数by是分组的列名
+    # 方法2：使用dataframe，第一个参数column是数据列名，第二个参数by是分组的列名
     df.boxplot(column='Lead Time', by='Project')
     
     plt.savefig('./resource./交付周期_箱线图.png') 
@@ -64,11 +69,28 @@ def page1_boxplot(prs):
     left, top, width, height = Inches(1), Inches(1.8), Inches(4.5), Inches(4.5)  
     slide.shapes.add_picture(img_path, left, top, width, height)
 
+def hello_selenium():
+    # chromedriverv2.3.7 配套chromev65
+    browser = webdriver.Chrome('./driver/chromedriver2.3.7.exe')
+    
+    # 打开指定网页
+    url = "http://weixin.sogou.com/"  
+    browser.get(url)
+    
+    # 在微信搜索框中输入关键字"六西格玛是个P"，通过ID查找
+    browser.find_element_by_id('query').send_keys('六西格玛是个P')
+    # 单击公众号搜索按钮，通过class查找
+    browser.find_element_by_class_name('swz2').click()
+    
+    # 关闭浏览器
+    browser.quit()
+
 if __name__ == "__main__":
-    # 使用自定义模板
+   # 使用自定义模板
     prs = Presentation('./template/ppt_template0.pptx')
     
-    page1_boxplot(prs)
+    # page1_boxplot(prs)
+    hello_selenium()
     
     # 保存ppt
     prs.save('数据分析报告.pptx')
