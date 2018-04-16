@@ -14,7 +14,11 @@ from pptx import Presentation
 from pptx.util import Inches 
 
 # web 
-from selenium import webdriver 
+from selenium import webdriver
+
+# excel
+import xlwt
+import time
 
 # slide layout测试
 def test_slide_layout(prs):
@@ -84,13 +88,48 @@ def hello_selenium():
     
     # 关闭浏览器
     browser.quit()
+    
+def hello_table_data():
+    # chromedriverv2.3.7 配套chromev65
+    browser = webdriver.Chrome('./driver/chromedriver2.3.7.exe')
+    
+    # 打开指定网
+    browser.get('http://newhouse.nj.house365.com/')
+    
+    # 等待5秒，页面加载OK，解决NoSuchElementException问题
+    time.sleep(5)    
+    
+    #创建工作簿  
+    wbk = xlwt.Workbook(encoding='utf-8', style_compression=0)  
+    #创建工作表  
+    sheet = wbk.add_sheet('sheet 1', cell_overwrite_ok=True)  
+ 
+    #今日交易信息快递
+    #将表的每一行存在table_tr_list中
+    table_body_xpath = '/html/body/div[19]/div[2]/div[2]/div[1]/table/tbody'
+    table_body = browser.find_element_by_xpath(table_body_xpath)
+    table_tr_list = table_body.find_elements_by_tag_name('tr')  
+    
+    # 从excel第一行开始存
+    for r,tr in enumerate(table_tr_list, 0):  
+        #将表的每一行的每一列内容存在table_td_list中  
+        table_td_list = tr.find_elements_by_tag_name('td')  
+        #写入表的内容到sheet 1中，第r行第c列  
+        for c,td in enumerate(table_td_list):  
+            sheet.write(r, c, td.text) 
+            
+    #保存表格到已有的 excel  
+    wbk.save('test.xls')  
+    
+    # 关闭浏览器
+    browser.quit() 
 
 if __name__ == "__main__":
    # 使用自定义模板
     prs = Presentation('./template/ppt_template0.pptx')
     
     # page1_boxplot(prs)
-    hello_selenium()
+    hello_table_data()
     
     # 保存ppt
     prs.save('数据分析报告.pptx')
