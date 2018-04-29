@@ -12,16 +12,16 @@ from selenium import webdriver
 import xlwt
 import time
 
-def hello_selenium():
+def weixin_sogou_search(weixin_name):
     # chromedriverv2.3.7 配套chromev65
-    browser = webdriver.Chrome('./driver/chromedriver2.3.7.exe')
+    browser = webdriver.Chrome('../resources/driver/chromedriver2.3.7.exe')
     
     # 打开指定网页
     url = "http://weixin.sogou.com/"  
     browser.get(url)
     
     # 在微信搜索框中输入关键字"六西格玛是个P"，通过ID查找
-    browser.find_element_by_id('query').send_keys('六西格玛是个P')
+    browser.find_element_by_id('query').send_keys(weixin_name)
     # 单击公众号搜索按钮，通过class查找
     browser.find_element_by_class_name('swz2').click()
     
@@ -29,15 +29,16 @@ def hello_selenium():
     time.sleep(3)  
     browser.quit()
     
-def hello_table_data():
+# 页面变化，代码暂时不可用
+def get_house365_today_info():
     # chromedriverv2.3.7 配套chromev65
-    browser = webdriver.Chrome('./driver/chromedriver2.3.7.exe')
+    browser = webdriver.Chrome('../resources/driver/chromedriver2.3.7.exe')
     
     # 打开指定网
     browser.get('http://newhouse.nj.house365.com/')
     
     # 等待5秒，页面加载OK，解决NoSuchElementException问题
-    time.sleep(5)    
+    time.sleep(10)    
     
     #创建工作簿  
     wbk = xlwt.Workbook(encoding='utf-8', style_compression=0)  
@@ -59,7 +60,7 @@ def hello_table_data():
             sheet.write(r, c, td.text) 
             
     #保存表格到已有的 excel  
-    wbk.save('test.xls')   
+    wbk.save('../resources/data/house365_today_info.xls')   
     
     # 关闭浏览器
     time.sleep(3) 

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+        # -*- coding: utf-8 -*-
 """
 Created on Thu Apr  5 12:12:34 2018
 
@@ -14,7 +14,7 @@ from pptx import Presentation
 from pptx.util import Inches 
 
 # slide layout测试
-def test_slide_layout(prs):
+def add_all_slide_layout(prs):
     slide_layout_list = ['Title (presentation title slide)',
                          'Title and Content',
                          'Section Header (sometimes called Segue)',
@@ -47,7 +47,7 @@ def page1_boxplot(prs):
     title.text = '箱线图示例' 
     
     # 导入数据集
-    df = pd.read_excel('./resource/data0.xlsx', 'Sheet1')
+    df = pd.read_excel('../resources/data/data0.xlsx', 'Sheet1')
     
     # 绘制箱线图 
     # 方法1：使用matplotlib，暂未找到方法，待完善
@@ -58,19 +58,11 @@ def page1_boxplot(prs):
     # 方法2：使用dataframe，第一个参数column是数据列名，第二个参数by是分组的列名
     df.boxplot(column='Lead Time', by='Project')
     
-    plt.savefig('./resource./交付周期_箱线图.png') 
+    plt.savefig('../resources/report/交付周期_箱线图.png') 
     plt.show()
     
     # 插入图片，在指定位置按预设值添加图片 
-    img_path = './resource./交付周期_箱线图.png' 
+    img_path = '../resources/report/交付周期_箱线图.png' 
     left, top, width, height = Inches(1), Inches(1.8), Inches(4.5), Inches(4.5)  
     slide.shapes.add_picture(img_path, left, top, width, height)
-
-if __name__ == "__main__":
-   # 使用自定义模板
-    prs = Presentation('./template/ppt_template0.pptx')
     
-    page1_boxplot(prs)
-    
-    # 保存ppt
-    prs.save('数据分析报告.pptx')

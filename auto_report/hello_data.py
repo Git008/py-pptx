@@ -9,6 +9,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
+import time
+from datetime import datetime
+
 class HelloData():
     _df = None
     
@@ -33,17 +36,21 @@ class HelloData():
     
     # 散点图
     def seaborn_pointplot(self):
-        sns.pointplot(x='Story Finsh Date', y='Lead Time', data=self._df)
+        self._df['Story完成时间'] = pd.to_datetime(self._df['Story完成时间'], format='%Y/%m%d')
+        
+        sns.pointplot(x='Story完成时间', y='Lead Time', data=self._df)
         plt.show()
         
     # 散点图
     # 待解决问题：ValueError: Could not interpret input 'Story Finsh Date'
     def seaborn_stripplot(self):
-        sns.stripplot(x='Story Finish Date', y='Lead Time', data=self._df, hue='Project')
+        sns.stripplot(x='Story完成时间', y='Lead Time', data=self._df, hue='Project')
         plt.show()
     
     # 分组折线图
     def df_pivot_table(self):
-        self._df.pivot_table(index=['Story Finish Date'], columns='Project', values='Lead Time') \
+        self._df['Story完成时间'] = pd.to_datetime(self._df['Story完成时间'], format='%Y/%m/%d')
+        
+        self._df.pivot_table(index=['Story完成时间'], columns='Project', values='Lead Time') \
             .plot(title='Lead Time', style='-o')
         plt.show()
