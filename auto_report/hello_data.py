@@ -7,6 +7,7 @@ Created on Fri Apr 20 20:16:11 2018
 # 数据分析
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import pandas as pd
 
 import time
@@ -36,21 +37,34 @@ class HelloData():
     
     # 散点图
     def seaborn_pointplot(self):
-        self._df['Story完成时间'] = pd.to_datetime(self._df['Story完成时间'], format='%Y/%m%d')
+        #self._df['Story完成时间'] = pd.to_datetime(self._df['Story完成时间'], format='%Y/%m%d')
         
         sns.pointplot(x='Story完成时间', y='Lead Time', data=self._df)
         plt.show()
         
     # 散点图
-    # 待解决问题：ValueError: Could not interpret input 'Story Finsh Date'
     def seaborn_stripplot(self):
         sns.stripplot(x='Story完成时间', y='Lead Time', data=self._df, hue='Project')
+        
+        # 自动旋转，解决x轴标签显示拥挤问题
+        plt.gcf().autofmt_xdate()
+        
+        # 将图例放在图外
+        plt.legend(bbox_to_anchor=(1.02, 1.0), borderaxespad=0)
+
+        # 显示图形
         plt.show()
     
     # 分组折线图
     def df_pivot_table(self):
-        self._df['Story完成时间'] = pd.to_datetime(self._df['Story完成时间'], format='%Y/%m/%d')
+        #self._df['Story完成时间'] = pd.to_datetime(self._df['Story完成时间'], format='%Y/%m/%d')
         
+        # 不同项目的折线图
         self._df.pivot_table(index=['Story完成时间'], columns='Project', values='Lead Time') \
             .plot(title='Lead Time', style='-o')
+        
+        # 将图例放在图外
+        plt.legend(bbox_to_anchor=(1.02, 1.0), borderaxespad=0)
+         
+        # 显示图形
         plt.show()
