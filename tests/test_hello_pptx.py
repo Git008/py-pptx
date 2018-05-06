@@ -14,15 +14,27 @@ from pptx import Presentation
 import auto_report.hello_pptx as hello_pptx 
 
 class TestHelloPptx(unittest.TestCase):
-    _prs = None
-    
-    def setUp(self):
-        self._prs = Presentation('../resources/template/ppt_template0.pptx')
-    
-    def tearDown(self):
-        self._prs.save('../resources/report/数据分析报告.pptx')
-        
+
     def test_add_all_slide_layout(self):
-        hello_pptx.add_all_slide_layout(self._prs)
+        prs = Presentation('../resources/template/ppt_template0.pptx')
+        hello_pptx.add_all_slide_layout(prs)
+        prs.save('../resources/report/slide_layout.pptx')
     
+    def test_add_shape_text(self):
+        prs = Presentation('../resources/template/ppt_template0.pptx')
         
+        
+        slide_layout = prs.slide_layouts[4]
+        
+        # add_text_by_shape
+        slide = prs.slides.add_slide(slide_layout)
+        hello_pptx.add_text_by_shape(slide)
+        
+        # add_text_by_palceholder
+        slide = prs.slides.add_slide(slide_layout)
+        hello_pptx.add_text_by_palceholder(slide)
+        
+        
+        prs.save('../resources/report/add_shape_text.pptx')
+    
+            

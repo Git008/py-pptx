@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # PPT
-from pptx import Presentation
 from pptx.util import Inches 
 
 # slide layout测试
@@ -33,6 +32,28 @@ def add_all_slide_layout(prs):
         if index != 6:
             title = new_slide.shapes.title
             title.text = name
+            
+# slide shape测试
+def add_text_by_shape(slide):
+    # 遍历所有的shape
+    for i, shape in enumerate(slide.shapes):
+        # 打印shape的id和名称
+        print('%d %s' % (shape.shape_id, shape.name))
+        
+        # 如果没有文本框就跳过
+        if not shape.has_text_frame:
+            continue
+        
+        # 设置shape的文本
+        shape.text = 'add_text_by_shape ' + str(i)
+
+def add_text_by_palceholder(slide):
+    for i, shape in enumerate(slide.placeholders):
+        print('%d %s' % (shape.placeholder_format.idx, shape.name))
+        if not shape.has_text_frame:
+            continue
+        
+        shape.text = 'add_text_by_palceholder ' + str(i)  
 
 # 箱线图    
 def page1_boxplot(prs):
